@@ -1,62 +1,63 @@
 @import "reset.css";
 
 body {
-    background-color: #f6f9fc;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3rem 0rem;
+  background-color: #f6f9fc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 0rem;
 }
 
 .canvas {
-    width: 45rem;
-    height: 45rem;
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  width: 45rem;
+  height: 45rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .controls {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-    .controls .controls_range {
-        margin-bottom: 1rem;
-    }
+.controls .controls_range {
+  margin-bottom: 1rem;
+}
 
-    .controls .controls_btns {
-        margin-bottom: 2rem;
-    }
-        .controls_btns button {
-            all: unset;
-            cursor: pointer;
-            background-color: white;
-            padding: 0.5rem 0;
-            width: 5rem;
-            text-align: center;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-            border: 0.2rem solid rgba(0, 0, 0, 0.2);
-            color: rgba(0, 0, 0, 0.7);
-            text-transform: uppercase;
-            font-weight: 800;
-            font-size: 1rem;
-        }
-            .controls_btns button:active {
-                transform: scale(0.98);
-            }
+.controls .controls_btns {
+  margin-bottom: 2rem;
+}
+.controls_btns button {
+  all: unset;
+  cursor: pointer;
+  background-color: white;
+  padding: 0.5rem 0;
+  width: 5rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 0.2rem solid rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.7);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 1rem;
+}
+.controls_btns button:active {
+  transform: scale(0.98);
+}
 
-    .controls .controls_colors {
-        display: flex;
-        flex-direction: row;
-    }
-        .controls_colors .controls_color {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
+.controls .controls_colors {
+  display: flex;
+  flex-direction: row;
+}
+.controls_colors .controls_color {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
