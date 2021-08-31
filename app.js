@@ -5,6 +5,7 @@ let redoList = [];
 
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
+const currentColor = document.getElementById("cur_color");
 const colorsDiv = document.getElementById("jsColors");
 const colorPickerForm = document.getElementById("color_picker_form");
 const colors = document.getElementsByClassName("jsColor");
@@ -67,6 +68,7 @@ function handleColorClick(event) {
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
+    currentColor.style.backgroundColor = color;
 }
 
 function hanldeRangeChange(event) {
