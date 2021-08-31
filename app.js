@@ -136,3 +136,13 @@ if (undoBtn) {
 if (redoBtn) {
     redoBtn.addEventListener("click", handleRedoClick);
 }
+
+document.addEventListener("keydown", (event) => {
+    if (event.ctrlKey) {
+        if (event.code === "KeyZ") {
+            handleUndoClick();
+        } else if (event.code === "KeyY") {
+            handleRedoClick();
+        }
+    }
+});
