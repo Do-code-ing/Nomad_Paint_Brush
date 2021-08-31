@@ -8,66 +8,77 @@
     <title>Paint Brush</title>
   </head>
   <body>
-    <canvas id="jsCanvas" class="canvas"></canvas>
-    <div class="controls">
-      <div class="controls_range">
-        <input
-          type="range"
-          id="jsRange"
-          min="0.1"
-          max="10"
-          value="5"
-          step="0.1"
-        />
-      </div>
-      <div class="controls_btns">
-        <button id="jsPaint">Paint</button>
-        <button id="jsEraser">Eraser</button>
-        <button id="jsFill">Fill</button>
-        <button id="jsSave">Save</button>
-        <button id="jsUndo">Undo</button>
-        <button id="jsRedo">Redo</button>
-        <button id="jsClear">Clear</button>
-      </div>
-      <div class="controls_colors" id="jsColors">
-        <div
-          class="controls_color jsColor"
-          style="background-color: #2c2c2c"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: white"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #ff3b30"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #ff9500"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #ffcc00"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #4cd963"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #5ac8fa"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #0579ff"
-        ></div>
-        <div
-          class="controls_color jsColor"
-          style="background-color: #5856d6"
-        ></div>
-      </div>
-    </div>
+    <main>
+      <canvas id="jsCanvas" class="canvas"></canvas>
+      <article class="controls">
+        <section class="controls_btns">
+          <button id="jsPaint">Paint</button>
+          <button id="jsEraser">Eraser</button>
+          <button id="jsFill">Fill</button>
+          <button id="jsSave">Save</button>
+          <button id="jsUndo">Undo</button>
+          <button id="jsRedo">Redo</button>
+          <button id="jsClear">Clear</button>
+        </section>
+        <section class="controls_range">
+          <p>Brush size: 5.0</p>
+          <input
+            type="range"
+            id="jsRange"
+            min="0.1"
+            max="10"
+            value="5"
+            step="0.1"
+          />
+        </section>
+        <section class="controls_colors_section">
+          <p>Color</p>
+          <form id="color_picker_form">
+            <label>NEW color</label>
+            <input id="color_picker" type="color" />
+            <input id="color_picker_btn" type="submit" />
+          </form>
+          <div class="controls_colors" id="jsColors">
+            <div
+              class="controls_color jsColor"
+              style="background-color: #2c2c2c"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: white"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #ff3b30"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #ff9500"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #ffcc00"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #4cd963"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #5ac8fa"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #0579ff"
+            ></div>
+            <div
+              class="controls_color jsColor"
+              style="background-color: #5856d6"
+            ></div>
+          </div>
+        </section>
+      </article>
+    </main>
     <script src="app.js"></script>
   </body>
 </html>

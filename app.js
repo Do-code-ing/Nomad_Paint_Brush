@@ -5,6 +5,8 @@ let redoList = [];
 
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
+const colorsDiv = document.getElementById("jsColors");
+const colorPickerForm = document.getElementById("color_picker_form");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const paintBtn = document.getElementById("jsPaint")
@@ -142,6 +144,28 @@ function handleClearClick() {
     ctx.restore();
 }
 
+function handleDeleteColor(event) {
+    const color = event.path[1];
+    color.remove();
+}
+
+function handleColorPickerSubmit(event) {
+    event.preventDefault();
+    const newColor = document.createElement("div");
+    const deleteBtn = document.createElement("div");
+    const colorPicker = document.getElementById("color_picker");
+    const color = colorPicker.value;
+    newColor.classList.add("controls_color");
+    newColor.classList.add("jsColor");
+    newColor.style.backgroundColor = color;
+    newColor.addEventListener("click", handleColorClick);
+    deleteBtn.innerText = "❌";
+    deleteBtn.classList.add(".new_color_delete_btn");
+    deleteBtn.addEventListener("click", handleDeleteColor);
+    newColor.appendChild(deleteBtn);
+    colorsDiv.appendChild(newColor);
+}
+
 if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
     canvas.addEventListener("mousedown", startPainting);
@@ -149,6 +173,10 @@ if (canvas) {
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("mousedown", handleCanvasFilling);
     canvas.addEventListener("contextmenu", handleCM);
+}
+
+if (colorPickerForm) {
+    colorPickerForm.addEventListener("submit", handleColorPickerSubmit);
 }
 
 if (colors) {
