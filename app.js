@@ -16,7 +16,7 @@ const redoBtn = document.getElementById("jsRedo");
 const clearBtn = document.getElementById("jsClear");
 
 const INITIAL_COLOR = "#2c2c2c";
-const CANVAS_SIZE = 720;
+const CANVAS_SIZE = 700;
 const WHITE = "white";
 const BUTTON_CLICK_COLOR = "deepskyblue";
 
