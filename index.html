@@ -16,14 +16,19 @@
             class="controls_color"
             id="cur_color"
             style="background-color: #2c2c2c"
-          ></div>
+          >
+            <p>Current Color</p>
+          </div>
+          <br />
           <button id="jsPaint">Paint</button>
           <button id="jsEraser">Eraser</button>
           <button id="jsFill">Fill</button>
-          <button id="jsSave">Save</button>
+          <br />
           <button id="jsUndo">Undo</button>
           <button id="jsRedo">Redo</button>
           <button id="jsClear">Clear</button>
+          <br />
+          <button id="jsSave">Save</button>
         </section>
         <section class="controls_range">
           <p>Brush size: 5.0</p>
@@ -37,11 +42,14 @@
           />
         </section>
         <section class="controls_colors_section">
-          <p>Color</p>
           <form id="color_picker_form">
-            <label>NEW color</label>
+            <p>Color</p>
             <input id="color_picker" type="color" />
-            <input id="color_picker_btn" type="submit" />
+            <input
+              id="color_picker_btn"
+              type="submit"
+              value="ADD a New Color"
+            />
           </form>
           <div class="controls_colors" id="jsColors">
             <div
@@ -50,7 +58,7 @@
             ></div>
             <div
               class="controls_color jsColor"
-              style="background-color: white"
+              style="background-color: #ffffff"
             ></div>
             <div
               class="controls_color jsColor"

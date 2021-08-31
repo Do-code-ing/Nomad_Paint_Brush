@@ -6,6 +6,7 @@ let redoList = [];
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const currentColor = document.getElementById("cur_color");
+const currentColorText = currentColor.querySelector("p");
 const colorsDiv = document.getElementById("jsColors");
 const colorPickerForm = document.getElementById("color_picker_form");
 const colors = document.getElementsByClassName("jsColor");
@@ -20,7 +21,7 @@ const clearBtn = document.getElementById("jsClear");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
-const WHITE = "white";
+const WHITE = "#ffffff";
 const BUTTON_CLICK_COLOR = "deepskyblue";
 
 canvas.width = CANVAS_SIZE;
@@ -64,11 +65,25 @@ function onMouseMove(event) {
     }
 }
 
+function rgbComplementaryToHexCom(color) {
+    if (color[0] === "r") {
+        const rgb = color.split(" ");
+        let r = parseInt(rgb[0].slice(4, -1)).toString(16).padStart(2, "f");
+        let g = parseInt(rgb[1].slice(0, -1)).toString(16).padStart(2, "f");
+        let b = parseInt(rgb[2].slice(0, -1)).toString(16).padStart(2, "f");
+        let hexRgb = `0x${r}${g}${b}`;
+        hexRgb = `#${("000000" + (("0xffffff") ^ hexRgb).toString(16)).slice(-6)}`;
+        return hexRgb;
+    }
+}
+
 function handleColorClick(event) {
     const color = event.target.style.backgroundColor;
+    const fontColor = rgbComplementaryToHexCom(color);
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     currentColor.style.backgroundColor = color;
+    currentColorText.style.color = fontColor;
 }
 
 function hanldeRangeChange(event) {
