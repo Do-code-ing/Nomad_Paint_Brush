@@ -1,3 +1,5 @@
+'use strict';
+
 const undoList = [];
 let redoList = [];
 
@@ -9,6 +11,7 @@ const mode = document.getElementById("jsMode");
 const saveBtn = document.getElementById("jsSave");
 const undoBtn = document.getElementById("jsUndo");
 const redoBtn = document.getElementById("jsRedo");
+const clearBtn = document.getElementById("jsClear");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 720;
@@ -29,11 +32,15 @@ function stopPainting() {
     painting = false;
 }
 
-function startPainting() {
-    painting = true;
+function memorizeImage() {
     const currentImage = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     undoList.push(currentImage);
     redoList = [];
+}
+
+function startPainting() {
+    painting = true;
+    memorizeImage();
 }
 
 function onMouseMove(event) {
@@ -87,10 +94,12 @@ function handleSaveClick() {
 }
 
 function handleUndoClick() {
-    const currentImage = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-    const data = undoList.pop();
-    redoList.push(currentImage);
-    ctx.putImageData(data, 0, 0);
+    if (undoList.length) {
+        const currentImage = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        const data = undoList.pop();
+        redoList.push(currentImage);
+        ctx.putImageData(data, 0, 0);
+    }
 }
 
 function handleRedoClick() {
@@ -100,6 +109,14 @@ function handleRedoClick() {
         undoList.push(currentImage);
         ctx.putImageData(data, 0, 0);
     }
+}
+
+function handleClearClick() {
+    memorizeImage();
+    ctx.save();
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.restore();
 }
 
 if (canvas) {
@@ -135,6 +152,10 @@ if (undoBtn) {
 
 if (redoBtn) {
     redoBtn.addEventListener("click", handleRedoClick);
+}
+
+if (clearBtn) {
+    clearBtn.addEventListener("click", handleClearClick);
 }
 
 document.addEventListener("keydown", (event) => {
