@@ -7,7 +7,9 @@ const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
-const mode = document.getElementById("jsMode");
+const paintBtn = document.getElementById("jsPaint")
+const fillBtn = document.getElementById("jsFill");
+const eraserBtn = document.getElementById("jsEraser");
 const saveBtn = document.getElementById("jsSave");
 const undoBtn = document.getElementById("jsUndo");
 const redoBtn = document.getElementById("jsRedo");
@@ -15,15 +17,19 @@ const clearBtn = document.getElementById("jsClear");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 720;
+const WHITE = "white";
+const BUTTON_CLICK_COLOR = "deepskyblue";
 
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
 
-ctx.fillStyle = "white";
+ctx.fillStyle = WHITE;
 ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 ctx.strokeStyle = INITIAL_COLOR;
 ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 2.5;
+
+paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
 
 let painting = false;
 let filling = false;
@@ -49,7 +55,7 @@ function onMouseMove(event) {
     if (!painting) {
         ctx.beginPath();
         ctx.moveTo(x, y);
-    } else {
+    } else if (painting && !filling) {
         ctx.lineTo(x, y);
         ctx.stroke();
     }
@@ -65,17 +71,34 @@ function hanldeRangeChange(event) {
     ctx.lineWidth = event.target.value;
 }
 
-function handleModeClick() {
-    if (filling === true) {
-        filling = false;
-        mode.innerText = "Fill";
-    } else {
-        filling = true;
-        mode.innerText = "Paint";
-    }
+function handlePaintBtnClick() {
+    filling = false;
+    ctx.restore();
+    canvas.style.cursor = "url(img/cursor.cur) 8 8, default";
+    paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
+    eraserBtn.style.backgroundColor = WHITE;
+    fillBtn.style.backgroundColor = WHITE;
 }
 
-function handleCanvasClick() {
+function handleEraserBtnClick() {
+    filling = false;
+    ctx.save();
+    ctx.strokeStyle = WHITE;
+    canvas.style.cursor = "url(img/eraser.cur) 14 14, default";
+    paintBtn.style.backgroundColor = WHITE;
+    eraserBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
+    fillBtn.style.backgroundColor = WHITE;
+}
+
+function handlefillBtnClick() {
+    filling = true;
+    canvas.style.cursor = "url(img/paintbucket.cur) 4 4, default";
+    paintBtn.style.backgroundColor = WHITE;
+    eraserBtn.style.backgroundColor = WHITE;
+    fillBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
+}
+
+function handleCanvasFilling() {
     if (filling) {
         ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     }
@@ -114,7 +137,7 @@ function handleRedoClick() {
 function handleClearClick() {
     memorizeImage();
     ctx.save();
-    ctx.fillStyle = "white";
+    ctx.fillStyle = WHITE;
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     ctx.restore();
 }
@@ -124,7 +147,7 @@ if (canvas) {
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
-    canvas.addEventListener("mousedown", handleCanvasClick);
+    canvas.addEventListener("mousedown", handleCanvasFilling);
     canvas.addEventListener("contextmenu", handleCM);
 }
 
@@ -138,8 +161,16 @@ if (range) {
     range.addEventListener("input", hanldeRangeChange);
 }
 
-if (mode) {
-    mode.addEventListener("click", handleModeClick);
+if (paintBtn) {
+    paintBtn.addEventListener("click", handlePaintBtnClick);
+}
+
+if (eraserBtn) {
+    eraserBtn.addEventListener("click", handleEraserBtnClick);
+}
+
+if (fillBtn) {
+    fillBtn.addEventListener("click", handlefillBtnClick);
 }
 
 if (saveBtn) {
