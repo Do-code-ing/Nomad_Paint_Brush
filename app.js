@@ -41,6 +41,7 @@ currentColor.style.backgroundColor = INITIAL_COLOR;
 currentColorText.style.color = "#d3d3d3";
 
 let painting = false;
+let erasing = false;
 let filling = false;
 
 function stopPainting() {
@@ -88,6 +89,9 @@ function rgbToHexComplementary(color) {
 }
 
 function handleColorClick(event) {
+    if (erasing) {
+        return;
+    }
     const color = event.target.style.backgroundColor;
     const fontColor = rgbToHexComplementary(color);
     ctx.strokeStyle = color;
@@ -116,8 +120,9 @@ function handleRangeTextChange(event) {
 
 function handlePaintBtnClick() {
     filling = false;
+    erasing = false;
     ctx.restore();
-    canvas.style.cursor = "url(img/cursor.cur) 8 8, default";
+    canvas.style.cursor = "url(img/cursor.cur) 5 5, default";
     paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
     eraserBtn.style.backgroundColor = WHITE;
     fillBtn.style.backgroundColor = WHITE;
@@ -125,6 +130,7 @@ function handlePaintBtnClick() {
 
 function handleEraserBtnClick() {
     filling = false;
+    erasing = true;
     ctx.save();
     ctx.strokeStyle = WHITE;
     canvas.style.cursor = "url(img/eraser.cur) 14 14, default";
@@ -135,6 +141,7 @@ function handleEraserBtnClick() {
 
 function handlefillBtnClick() {
     filling = true;
+    erasing = false;
     canvas.style.cursor = "url(img/paintbucket.cur) 4 4, default";
     paintBtn.style.backgroundColor = WHITE;
     eraserBtn.style.backgroundColor = WHITE;
