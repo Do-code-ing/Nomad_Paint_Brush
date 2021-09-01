@@ -9,8 +9,11 @@ const currentColor = document.getElementById("cur_color");
 const currentColorText = currentColor.querySelector("p");
 const colorsDiv = document.getElementById("jsColors");
 const colorPickerForm = document.getElementById("color_picker_form");
+const colorPicker = document.getElementById("color_picker");
+const colorPickerBtn = document.getElementById("color_picker_btn");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
+const curRange = document.getElementById("cur_range");
 const paintBtn = document.getElementById("jsPaint")
 const fillBtn = document.getElementById("jsFill");
 const eraserBtn = document.getElementById("jsEraser");
@@ -31,9 +34,11 @@ ctx.fillStyle = WHITE;
 ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 ctx.strokeStyle = INITIAL_COLOR;
 ctx.fillStyle = INITIAL_COLOR;
-ctx.lineWidth = 2.5;
+ctx.lineWidth = 5;
 
 paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
+currentColor.style.backgroundColor = INITIAL_COLOR;
+currentColorText.style.color = "#d3d3d3";
 
 let painting = false;
 let filling = false;
@@ -65,21 +70,26 @@ function onMouseMove(event) {
     }
 }
 
-function rgbComplementaryToHexCom(color) {
+function rgbToHex(color) {
     if (color[0] === "r") {
         const rgb = color.split(" ");
-        let r = parseInt(rgb[0].slice(4, -1)).toString(16).padStart(2, "f");
-        let g = parseInt(rgb[1].slice(0, -1)).toString(16).padStart(2, "f");
-        let b = parseInt(rgb[2].slice(0, -1)).toString(16).padStart(2, "f");
-        let hexRgb = `0x${r}${g}${b}`;
-        hexRgb = `#${("000000" + (("0xffffff") ^ hexRgb).toString(16)).slice(-6)}`;
+        const r = parseInt(rgb[0].slice(4, -1)).toString(16).padStart(2, "f");
+        const g = parseInt(rgb[1].slice(0, -1)).toString(16).padStart(2, "f");
+        const b = parseInt(rgb[2].slice(0, -1)).toString(16).padStart(2, "f");
+        const hexRgb = `0x${r}${g}${b}`;
         return hexRgb;
     }
 }
 
+function rgbToHexComplementary(color) {
+    let hexRgb = rgbToHex(color);
+    hexRgb = `#${(("0xffffff") ^ hexRgb).toString(16).slice(-6)}`;
+    return hexRgb;
+}
+
 function handleColorClick(event) {
     const color = event.target.style.backgroundColor;
-    const fontColor = rgbComplementaryToHexCom(color);
+    const fontColor = rgbToHexComplementary(color);
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     currentColor.style.backgroundColor = color;
@@ -87,7 +97,21 @@ function handleColorClick(event) {
 }
 
 function hanldeRangeChange(event) {
-    ctx.lineWidth = event.target.value;
+    const value = Number(event.target.value).toFixed(1);
+    ctx.lineWidth = value;
+    curRange.value = value;
+}
+
+function handleRangeTextChange(event) {
+    let value = Number(event.target.value).toFixed(1);
+    if (value > 10) {
+        value = 10.0
+    } else if (value < 0.1) {
+        value = 0.1
+    }
+    ctx.lineWidth = value;
+    range.value = value;
+    curRange.value = value;
 }
 
 function handlePaintBtnClick() {
@@ -161,26 +185,43 @@ function handleClearClick() {
     ctx.restore();
 }
 
-function handleDeleteColor(event) {
-    const color = event.path[1];
-    color.remove();
+function handleColorDelete(event) {
+    if (colorsDiv.childElementCount < 36) {
+        colorPickerBtn.value = "add a new color";
+    }
+
+    const index = parseInt(event.target.id);
+    for (let i = 9; i < colorsDiv.childElementCount; i++) {
+        if (parseInt(colorsDiv.children[i].id) === index) {
+            colorsDiv.children[i].remove();
+            return;
+        }
+    }
 }
 
 function handleColorPickerSubmit(event) {
     event.preventDefault();
+    if (colorsDiv.childElementCount === 36) {
+        colorPickerBtn.value = "Too many colors";
+        return;
+    }
+    const newColorDiv = document.createElement("div");
     const newColor = document.createElement("div");
     const deleteBtn = document.createElement("div");
-    const colorPicker = document.getElementById("color_picker");
     const color = colorPicker.value;
+    newColorDiv.classList.add("new_color");
+    newColorDiv.id = `${colorsDiv.childElementCount - 9}_color`;
+    deleteBtn.innerText = "❌";
+    deleteBtn.classList.add("new_color_delete_btn");
+    deleteBtn.id = `${colorsDiv.childElementCount - 9}_btn`;
+    deleteBtn.addEventListener("click", handleColorDelete);
     newColor.classList.add("controls_color");
     newColor.classList.add("jsColor");
     newColor.style.backgroundColor = color;
     newColor.addEventListener("click", handleColorClick);
-    deleteBtn.innerText = "❌";
-    deleteBtn.classList.add(".new_color_delete_btn");
-    deleteBtn.addEventListener("click", handleDeleteColor);
-    newColor.appendChild(deleteBtn);
-    colorsDiv.appendChild(newColor);
+    newColorDiv.appendChild(deleteBtn);
+    newColorDiv.appendChild(newColor);
+    colorsDiv.appendChild(newColorDiv);
 }
 
 if (canvas) {
@@ -204,6 +245,10 @@ if (colors) {
 
 if (range) {
     range.addEventListener("input", hanldeRangeChange);
+}
+
+if (curRange) {
+    curRange.addEventListener("change", handleRangeTextChange);
 }
 
 if (paintBtn) {

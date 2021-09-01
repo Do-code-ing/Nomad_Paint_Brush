@@ -20,6 +20,7 @@ main {
 }
 
 input,
+label,
 p {
   text-align: center;
   color: rgba(0, 0, 0, 0.7);
@@ -53,6 +54,10 @@ p {
 
 .controls .controls_range input {
   width: 300px;
+}
+
+.controls .controls_range #cur_range {
+  width: 40px;
 }
 
 .controls .controls_btns {
@@ -117,7 +122,14 @@ p {
   text-align: right;
 }
 
+.new_color {
+  position: relative;
+}
+
 .new_color_delete_btn {
+  position: absolute;
+  right: 10px;
+  top: 0;
   width: 10px;
   height: 10px;
   cursor: pointer;
