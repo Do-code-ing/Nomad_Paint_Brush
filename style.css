@@ -20,12 +20,22 @@ main {
 }
 
 input,
-label,
+.title,
 p {
   text-align: center;
   color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
   font-weight: 800;
+}
+
+.title {
+  font-size: 35px;
+  text-align: left;
+  text-decoration: underline;
+}
+
+input {
+  border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
 .canvas {
@@ -39,30 +49,40 @@ p {
 }
 
 .controls {
-  margin-top: 20px;
   display: grid;
   grid-template-columns: 1fr 9fr;
-  grid-template-rows: 2fr 5fr;
+  grid-template-rows: 1fr 3fr 3fr;
+  column-gap: 20px;
+  row-gap: 15px;
+  margin-top: 20px;
   text-align: center;
 }
 
-.controls .controls_range {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-  margin-bottom: 10px;
+.right_section {
+  padding: 10px;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.controls .controls_range input {
+.controls_range {
+  grid-column: 2;
+  grid-row: 1;
+  text-align: left;
+}
+
+.controls .controls_range #jsRange {
   width: 300px;
 }
 
 .controls .controls_range #cur_range {
   width: 40px;
+  border-radius: 6px;
 }
 
 .controls .controls_btns {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3;
+  grid-column: 1;
+  grid-row: 1 / 4;
   display: flex;
   flex-direction: column;
 }
@@ -74,7 +94,7 @@ p {
   background-color: white;
   padding: 5px 0;
   width: 80px;
-  height: 60px;
+  height: 50px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   border: 3px solid rgba(0, 0, 0, 0.2);
@@ -99,21 +119,82 @@ p {
   transform: translate(-50%, -50%);
 }
 
+#cur_color,
+#jsText,
+#jsClear {
+  margin-bottom: 16px;
+}
+
+#jsSave {
+  background-color: wheat;
+  color: sienna;
+}
+
+#color_picker_btn:active,
 .controls_btns button:active {
   transform: scale(0.98);
 }
 
+.controls .controls_colors_section {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+}
+
+#color_picker_div {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+#color_picker_front {
+  position: relative;
+  background-color: black;
+}
+
+#color_picker_front p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+#color_picker_form_div {
+  position: relative;
+}
+
+#color_picker {
+  position: absolute;
+  z-index: -10;
+  opacity: 0%;
+}
+
+#color_picker_btn {
+  width: 50px;
+  height: 50px;
+  margin-left: 5px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-size: 15px;
+  cursor: pointer;
+}
+
 .controls .controls_colors {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0;
   width: 450px;
+  margin-top: 15px;
 }
 
-.controls_color {
+.controls_color,
+#color_picker_front {
   width: 50px;
   height: 50px;
   border-radius: 25px;
@@ -135,9 +216,7 @@ p {
   cursor: pointer;
 }
 
-#color_picker_form {
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.controls_text {
+  grid-column: 2;
+  grid-row: 3;
 }

@@ -26,8 +26,8 @@
           <button id="jsClear">Clear</button>
           <button id="jsSave">Save</button>
         </section>
-        <section class="controls_range">
-          <label>Brush size</label>
+        <section class="controls_range right_section">
+          <label class="title">Brush size</label>
           <input id="cur_range" type="text" value="5.0" />
           <input
             type="range"
@@ -38,16 +38,19 @@
             step="0.1"
           />
         </section>
-        <section class="controls_colors_section">
-          <form id="color_picker_form">
-            <p>Color</p>
-            <input id="color_picker" type="color" />
-            <input
-              id="color_picker_btn"
-              type="submit"
-              value="ADD a New Color"
-            />
-          </form>
+        <section class="controls_colors_section right_section">
+          <p class="title">Color picker</p>
+          <div id="color_picker_div">
+            <div id="color_picker_front">
+              <p>pick</p>
+            </div>
+            <div id="color_picker_form_div">
+              <form id="color_picker_form">
+                <input id="color_picker" type="color" />
+                <input id="color_picker_btn" type="submit" value="Add" />
+              </form>
+            </div>
+          </div>
           <div class="controls_colors" id="jsColors">
             <div
               class="controls_color jsColor"
@@ -87,8 +90,8 @@
             ></div>
           </div>
         </section>
-        <section class="controls_text">
-          <p>Text</p>
+        <section class="controls_text right_section">
+          <p class="title">Text</p>
           <input
             type="text"
             id="text-input"

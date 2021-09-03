@@ -9,6 +9,7 @@ const currentColor = document.getElementById("cur_color");
 const currentColorText = currentColor.querySelector("p");
 const colorsDiv = document.getElementById("jsColors");
 const colorPickerForm = document.getElementById("color_picker_form");
+const colorPickerFront = document.getElementById("color_picker_front");
 const colorPicker = document.getElementById("color_picker");
 const colorPickerBtn = document.getElementById("color_picker_btn");
 const colors = document.getElementsByClassName("jsColor");
@@ -127,20 +128,27 @@ function paintText(event) {
     }
 }
 
-function rgbToHex(color) {
+function rgbToComplementary(color) {
     if (color[0] === "r") {
         const rgb = color.split(" ");
-        const r = parseInt(rgb[0].slice(4, -1)).toString(16).padStart(2, "f");
-        const g = parseInt(rgb[1].slice(0, -1)).toString(16).padStart(2, "f");
-        const b = parseInt(rgb[2].slice(0, -1)).toString(16).padStart(2, "f");
-        const hexRgb = `0x${r}${g}${b}`;
-        return hexRgb;
+        const r = 255 - parseInt(rgb[0].slice(4, -1));
+        const g = 255 - parseInt(rgb[1].slice(0, -1));
+        const b = 255 - parseInt(rgb[2].slice(0, -1));
+        return [r, g, b];
+    } else {
+        const r = 255 - color.slice(1, 3);
+        const g = 255 - color.slice(3, 5);
+        const b = 255 - color.slice(5, 7);
+        return [r, g, b];
     }
 }
 
 function rgbToHexComplementary(color) {
-    let hexRgb = rgbToHex(color);
-    hexRgb = `#${(("0xffffff") ^ hexRgb).toString(16).slice(-6)}`;
+    let [r, g, b] = rgbToComplementary(color);
+    r = r.toString(16).padStart(2, "0")
+    g = g.toString(16).padStart(2, "0")
+    b = b.toString(16).padStart(2, "0")
+    const hexRgb = `#${r}${g}${b}`;
     return hexRgb;
 }
 
@@ -270,8 +278,11 @@ function handleClearClick() {
 }
 
 function handleColorDelete(event) {
-    if (colorsDiv.childElementCount < 36) {
-        colorPickerBtn.value = "add a new color";
+    if (colorsDiv.childElementCount < 37) {
+        colorPickerBtn.value = "add";
+        colorPickerBtn.style.fontSize = "15px";
+        colorPickerBtn.style.backgroundColor = "white";
+        colorPickerBtn.style.color = "black";
     }
 
     const index = parseInt(event.target.id);
@@ -286,8 +297,13 @@ function handleColorDelete(event) {
 function handleColorPickerSubmit(event) {
     event.preventDefault();
     if (colorsDiv.childElementCount === 36) {
-        colorPickerBtn.value = "Too many colors";
         return;
+    }
+    if (colorsDiv.childElementCount === 35) {
+        colorPickerBtn.value = "FULL";
+        colorPickerBtn.style.fontSize = "13px";
+        colorPickerBtn.style.backgroundColor = "salmon";
+        colorPickerBtn.style.color = "white";
     }
     const newColorDiv = document.createElement("div");
     const newColor = document.createElement("div");
@@ -316,6 +332,21 @@ if (canvas) {
     canvas.addEventListener("mousedown", handleCanvasFilling);
     canvas.addEventListener("mousedown", paintText);
     canvas.addEventListener("contextmenu", handleCM);
+}
+
+if (colorPickerFront) {
+    colorPickerFront.addEventListener("click", () => {
+        colorPicker.click();
+    });
+}
+
+if (colorPicker) {
+    colorPicker.addEventListener("input", () => {
+        const p = colorPickerFront.querySelector("p");
+        const color = colorPicker.value
+        colorPickerFront.style.backgroundColor = color;
+        p.style.color = rgbToHexComplementary(color);
+    });
 }
 
 if (colorPickerForm) {
