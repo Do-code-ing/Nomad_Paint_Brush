@@ -17,15 +17,60 @@ const curRange = document.getElementById("cur_range");
 const paintBtn = document.getElementById("jsPaint")
 const fillBtn = document.getElementById("jsFill");
 const eraserBtn = document.getElementById("jsEraser");
-const saveBtn = document.getElementById("jsSave");
+const textBtn = document.getElementById("jsText");
 const undoBtn = document.getElementById("jsUndo");
 const redoBtn = document.getElementById("jsRedo");
 const clearBtn = document.getElementById("jsClear");
+const saveBtn = document.getElementById("jsSave");
+const textInput = document.getElementById("text-input");
+const fontSelect = document.getElementById("font-family");
+const fontSizeInput = document.getElementById("font-size");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
 const WHITE = "#ffffff";
 const BUTTON_CLICK_COLOR = "deepskyblue";
+
+const fontFamily = [
+    "굴림",
+    "굴림체",
+    "궁서",
+    "궁서체",
+    "돋움",
+    "돋움체",
+    "바탕",
+    "바탕체",
+    "휴먼엽서체",
+    "Andale Mono",
+    "Arial",
+    "Arial Black",
+    "Arial Narrow",
+    "Bookman Old Style",
+    "Comic Sans MS",
+    "Copperlate Gothic",
+    "Courier",
+    "Courier NEW",
+    "Fiexedsys",
+    "Georgia",
+    "Impact",
+    "Lucida Console",
+    "Marlett",
+    "MS Gothic",
+    "MS Hei",
+    "MS Outlook",
+    "MS Sans Serif",
+    "MS Serif",
+    "MT Extra",
+    "Symbol",
+    "Tahoma",
+    "Times New Roman",
+    "Verdana",
+    "Verdana Italic",
+    "Webdings",
+    "WingDings",
+];
+let currentFont = "MS Sans Serif";
+let fontSize = 50;
 
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
@@ -35,6 +80,7 @@ ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 ctx.strokeStyle = INITIAL_COLOR;
 ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 5;
+ctx.font = `${fontSize}px ${currentFont}`
 
 paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
 currentColor.style.backgroundColor = INITIAL_COLOR;
@@ -43,6 +89,8 @@ currentColorText.style.color = "#d3d3d3";
 let painting = false;
 let erasing = false;
 let filling = false;
+let text = "";
+let typing = false;
 
 function stopPainting() {
     painting = false;
@@ -65,9 +113,17 @@ function onMouseMove(event) {
     if (!painting) {
         ctx.beginPath();
         ctx.moveTo(x, y);
-    } else if (painting && !filling) {
+    } else if (painting && !filling && !typing) {
         ctx.lineTo(x, y);
         ctx.stroke();
+    }
+}
+
+function paintText(event) {
+    const x = event.offsetX;
+    const y = event.offsetY;
+    if (typing) {
+        ctx.fillText(text, x, y);
     }
 }
 
@@ -121,31 +177,52 @@ function handleRangeTextChange(event) {
 function handlePaintBtnClick() {
     filling = false;
     erasing = false;
+    typing = false;
     ctx.restore();
     canvas.style.cursor = "url(img/cursor.cur) 5 5, default";
     paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
     eraserBtn.style.backgroundColor = WHITE;
     fillBtn.style.backgroundColor = WHITE;
+    textBtn.style.backgroundColor = WHITE;
 }
 
 function handleEraserBtnClick() {
     filling = false;
     erasing = true;
+    typing = false;
     ctx.save();
     ctx.strokeStyle = WHITE;
     canvas.style.cursor = "url(img/eraser.cur) 14 14, default";
     paintBtn.style.backgroundColor = WHITE;
     eraserBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
     fillBtn.style.backgroundColor = WHITE;
+    textBtn.style.backgroundColor = WHITE;
 }
 
 function handlefillBtnClick() {
     filling = true;
     erasing = false;
+    typing = false
     canvas.style.cursor = "url(img/paintbucket.cur) 4 4, default";
     paintBtn.style.backgroundColor = WHITE;
     eraserBtn.style.backgroundColor = WHITE;
     fillBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
+    textBtn.style.backgroundColor = WHITE;
+}
+
+function handleTextBtnClick() {
+    filling = false;
+    erasing = false;
+    typing = true;
+    canvas.style.cursor = "text";
+    paintBtn.style.backgroundColor = WHITE;
+    eraserBtn.style.backgroundColor = WHITE;
+    fillBtn.style.backgroundColor = WHITE;
+    textBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
+}
+
+function handleTextChange() {
+    text = textInput.value;
 }
 
 function handleCanvasFilling() {
@@ -237,6 +314,7 @@ if (canvas) {
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("mousedown", handleCanvasFilling);
+    canvas.addEventListener("mousedown", paintText);
     canvas.addEventListener("contextmenu", handleCM);
 }
 
@@ -270,8 +348,12 @@ if (fillBtn) {
     fillBtn.addEventListener("click", handlefillBtnClick);
 }
 
-if (saveBtn) {
-    saveBtn.addEventListener("click", handleSaveClick);
+if (textBtn) {
+    textBtn.addEventListener("click", handleTextBtnClick);
+}
+
+if (textInput) {
+    textInput.addEventListener("input", handleTextChange);
 }
 
 if (undoBtn) {
@@ -284,6 +366,41 @@ if (redoBtn) {
 
 if (clearBtn) {
     clearBtn.addEventListener("click", handleClearClick);
+}
+
+if (saveBtn) {
+    saveBtn.addEventListener("click", handleSaveClick);
+}
+
+fontFamily.forEach((font) => {
+    const option = document.createElement("option");
+    option.value = font;
+    option.innerText = font
+    fontSelect.appendChild(option);
+    if (font === "MS Sans Serif") {
+        option.selected = true;
+    }
+});
+
+if (fontSelect) {
+    fontSelect.addEventListener("input", () => {
+        const newFont = fontSelect.options[fontSelect.selectedIndex].text
+        currentFont = newFont;
+        ctx.font = `${fontSize}px ${currentFont}`;
+    })
+}
+
+if (fontSizeInput) {
+    fontSizeInput.addEventListener("input", () => {
+        let newSize = fontSizeInput.value;
+        if (newSize < 0.1) {
+            newSize = 0.1
+        }
+        fontSize = newSize;
+        ctx.font = `${fontSize}px ${currentFont}`;
+        console.log(fontSize, currentFont)
+        console.log(ctx.font)
+    })
 }
 
 document.addEventListener("keydown", (event) => {

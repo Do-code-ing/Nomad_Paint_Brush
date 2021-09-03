@@ -15,19 +15,19 @@
           <div class="controls_color" id="cur_color">
             <p>Current Color</p>
           </div>
-          <br />
+          <p>Mode</p>
           <button id="jsPaint">Paint</button>
           <button id="jsEraser">Eraser</button>
           <button id="jsFill">Fill</button>
-          <br />
+          <button id="jsText">Text</button>
+          <p>Function</p>
           <button id="jsUndo">Undo</button>
           <button id="jsRedo">Redo</button>
           <button id="jsClear">Clear</button>
-          <br />
           <button id="jsSave">Save</button>
         </section>
         <section class="controls_range">
-          <label>Brush size:</label>
+          <label>Brush size</label>
           <input id="cur_range" type="text" value="5.0" />
           <input
             type="range"
@@ -86,6 +86,18 @@
               style="background-color: #5856d6"
             ></div>
           </div>
+        </section>
+        <section class="controls_text">
+          <p>Text</p>
+          <input
+            type="text"
+            id="text-input"
+            placeholder="write a text and use text mode"
+          />
+          <label>Font</label>
+          <select id="font-family"></select>
+          <label>Font Size</label>
+          <input type="text" id="font-size" value="50" />
         </section>
       </article>
     </main>
