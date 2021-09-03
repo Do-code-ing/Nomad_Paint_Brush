@@ -92,15 +92,22 @@
         </section>
         <section class="controls_text right_section">
           <p class="title">Text</p>
-          <input
-            type="text"
-            id="text-input"
-            placeholder="write a text and use text mode"
-          />
-          <label>Font</label>
-          <select id="font-family"></select>
-          <label>Font Size</label>
-          <input type="text" id="font-size" value="50" />
+          <div id="text_div">
+            <div id="font_family_div">
+              <label>Font</label>
+              <select id="font_family"></select>
+              <br />
+              <label>Font Size</label>
+              <input type="text" id="font_size" value="20" />
+            </div>
+            <textarea
+              id="text_input"
+              placeholder="Write a text and use TEXT mode"
+              wrap="hard"
+              rows="10"
+              cols="30"
+            ></textarea>
+          </div>
         </section>
       </article>
     </main>

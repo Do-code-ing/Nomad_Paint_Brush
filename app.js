@@ -23,15 +23,14 @@ const undoBtn = document.getElementById("jsUndo");
 const redoBtn = document.getElementById("jsRedo");
 const clearBtn = document.getElementById("jsClear");
 const saveBtn = document.getElementById("jsSave");
-const textInput = document.getElementById("text-input");
-const fontSelect = document.getElementById("font-family");
-const fontSizeInput = document.getElementById("font-size");
+const textInput = document.getElementById("text_input");
+const fontSelect = document.getElementById("font_family");
+const fontSizeInput = document.getElementById("font_size");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
 const WHITE = "#ffffff";
 const BUTTON_CLICK_COLOR = "deepskyblue";
-
 const fontFamily = [
     "굴림",
     "굴림체",
@@ -70,8 +69,16 @@ const fontFamily = [
     "Webdings",
     "WingDings",
 ];
+
 let currentFont = "MS Sans Serif";
-let fontSize = 50;
+let fontSize = 20;
+
+let painting = false;
+let erasing = false;
+let filling = false;
+let textList = [];
+let typing = false;
+
 
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
@@ -87,11 +94,15 @@ paintBtn.style.backgroundColor = BUTTON_CLICK_COLOR;
 currentColor.style.backgroundColor = INITIAL_COLOR;
 currentColorText.style.color = "#d3d3d3";
 
-let painting = false;
-let erasing = false;
-let filling = false;
-let text = "";
-let typing = false;
+fontFamily.forEach((font) => {
+    const option = document.createElement("option");
+    option.value = font;
+    option.innerText = font
+    fontSelect.appendChild(option);
+    if (font === "MS Sans Serif") {
+        option.selected = true;
+    }
+});
 
 function stopPainting() {
     painting = false;
@@ -123,8 +134,12 @@ function onMouseMove(event) {
 function paintText(event) {
     const x = event.offsetX;
     const y = event.offsetY;
+    let i = 0;
     if (typing) {
-        ctx.fillText(text, x, y);
+        textList.forEach((text) => {
+            ctx.fillText(text, x, y+i);
+            i += fontSize;
+        })
     }
 }
 
@@ -230,7 +245,8 @@ function handleTextBtnClick() {
 }
 
 function handleTextChange() {
-    text = textInput.value;
+    const texts = textInput.value;
+    textList = texts.split("\n");
 }
 
 function handleCanvasFilling() {
@@ -403,16 +419,6 @@ if (saveBtn) {
     saveBtn.addEventListener("click", handleSaveClick);
 }
 
-fontFamily.forEach((font) => {
-    const option = document.createElement("option");
-    option.value = font;
-    option.innerText = font
-    fontSelect.appendChild(option);
-    if (font === "MS Sans Serif") {
-        option.selected = true;
-    }
-});
-
 if (fontSelect) {
     fontSelect.addEventListener("input", () => {
         const newFont = fontSelect.options[fontSelect.selectedIndex].text
@@ -427,10 +433,8 @@ if (fontSizeInput) {
         if (newSize < 0.1) {
             newSize = 0.1
         }
-        fontSize = newSize;
+        fontSize = parseInt(newSize);
         ctx.font = `${fontSize}px ${currentFont}`;
-        console.log(fontSize, currentFont)
-        console.log(ctx.font)
     })
 }
 

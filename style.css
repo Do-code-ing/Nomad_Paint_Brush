@@ -20,8 +20,12 @@ main {
 }
 
 input,
-.title,
-p {
+textarea,
+select,
+label,
+p,
+.title {
+  font-family: inherit;
   text-align: center;
   color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
@@ -29,12 +33,14 @@ p {
 }
 
 .title {
-  font-size: 35px;
+  font-size: 30px;
   text-align: left;
   text-decoration: underline;
 }
 
-input {
+input,
+textarea,
+select {
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
@@ -51,15 +57,15 @@ input {
 .controls {
   display: grid;
   grid-template-columns: 1fr 9fr;
-  grid-template-rows: 1fr 3fr 3fr;
+  grid-template-rows: 2fr 5fr 5fr;
   column-gap: 20px;
   row-gap: 15px;
-  margin-top: 20px;
   text-align: center;
 }
 
 .right_section {
-  padding: 10px;
+  padding: 15px;
+  padding-top: 10px;
   border: 3px solid rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -68,14 +74,17 @@ input {
 .controls_range {
   grid-column: 2;
   grid-row: 1;
+  width: 310px;
   text-align: left;
 }
 
 .controls .controls_range #jsRange {
   width: 300px;
+  margin-top: 18px;
 }
 
-.controls .controls_range #cur_range {
+.controls .controls_range #cur_range,
+#font_size {
   width: 40px;
   border-radius: 6px;
 }
@@ -108,7 +117,7 @@ input {
 #cur_color {
   position: relative;
   cursor: default;
-  align-items: center;
+  margin-top: 15px;
   font-size: 15px;
 }
 
@@ -185,12 +194,15 @@ input {
 }
 
 .controls .controls_colors {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 0;
+  align-content: flex-start;
   width: 450px;
-  margin-top: 15px;
+  height: 200px;
+  margin-top: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .controls_color,
@@ -219,4 +231,25 @@ input {
 .controls_text {
   grid-column: 2;
   grid-row: 3;
+}
+
+#text_div {
+  margin-top: 15px;
+  text-align: left;
+}
+
+#font_family {
+  width: 160px;
+  border-radius: 5px;
+}
+
+#text_input {
+  width: 426px;
+  height: 130px;
+  border-radius: 10px;
+  text-transform: initial;
+  font-size: 20px;
+  resize: none;
+  text-align: left;
+  padding: 10px;
 }
